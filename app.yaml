@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: Reservation Services
+  labels:
+    app: Reservation Services
+spec:
+  type: ClusterIP
+  selector:
+    app: Reservation Services
+  ports:
+    - name: tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: Reservation Services
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Reservation Services
+  template:
+    metadata:
+      labels:
+        app: Reservation Services
+        version: v1
+    spec:
+      containers:
+      - name: Reservation Services
+        image: Reservation Services
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
