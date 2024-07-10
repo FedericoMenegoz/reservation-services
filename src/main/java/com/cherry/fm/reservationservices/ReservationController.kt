@@ -13,12 +13,13 @@ import io.helidon.webserver.http.ServerResponse
 
 class ReservationController(
 	private val resService: ReservationService = ReservationService(),
+	val port: Int = 8080,
 ) {
 	private val config: Config = Config.create()
 
 	private val server by lazy {
 		WebServer.builder()
-			.config(config.get("server"))
+//			.config(config.get("server"))
 			.mediaContext {
 				it.addMediaSupport(JacksonSupport.create(ObjectMapper().apply {
 					registerModule(JavaTimeModule())
@@ -28,7 +29,7 @@ class ReservationController(
 			.routing {
 				it.post("/api/flights/reservation",  { req, res -> makeReservation(req, res)})
 				it.get("/api/flights/reservation/{id}", { req, res -> getReservation(req, res)})
-			}.build()
+			}.port(port).build()
 	}
 
 	private fun getReservation(req: ServerRequest, res: ServerResponse) {

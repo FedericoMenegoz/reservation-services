@@ -58,7 +58,7 @@ class ReservationControllerTest {
 
 	@Test
 	fun `check first post response`() {
-		val rc = ReservationController()
+		val rc = ReservationController(port = 8081)
 		rc.startServer()
 		val client = webClient()!!
 		val r  = sentPostCheckResponse(client, reservation)
