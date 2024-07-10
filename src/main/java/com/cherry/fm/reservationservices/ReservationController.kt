@@ -18,6 +18,7 @@ class ReservationController(
 	private val config: Config = Config.create()
 
 	private val server by lazy {
+		println("Building server...")
 		WebServer.builder()
 //			.config(config.get("server"))
 			.mediaContext {
@@ -39,42 +40,53 @@ class ReservationController(
 			.get("id")
 			.toString()
 			.toInt()
-
+		println("GET request with id: $id")
 		res.header("Content-Type", "application/json")
 			.status(Status.OK_200)
 			.send(resService.getReservationById(id))
+		println("GET response sent.")
 	}
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
 		val request = req.content().`as`(Reservation::class.java)
 		if (request.itineraryId == null) {
 			res.status(Status.BAD_REQUEST_400).send()
+			println("POST error itineraryId is undefined...")
 			return
 		}
-
+		println("POST received: $request")
 		res
 			.header("Content-Type", "application/json")
 			.status(Status.OK_200)
 			.send(resService.saveReservation(request))
+		println("POST response sent...")
 	}
 
 	fun startServer() {
-		server.start()
+		try	{
+			server.start()
+			println("Server started, listening on ${server.port()}")
+		} catch (e: Exception) {
+			println("Server start error: ${e.message}")
+		}
 	}
 
 	fun stopServer() {
-		server.stop()
+		try {
+			server.stop()
+			println("Server stopped.")
+		} catch (e: Exception) {
+			println("Server stopped error: ${e.message}")
+		}
 	}
 }
 
 
 data class Reservation(
-	var passengers: List<Passenger>,
-	var contact: Contact,
+	var passengers: List<Passenger> = listOf(),
+	var contact: Contact = Contact("", ""),
 	var itineraryId: String? = null,
-) {
-	constructor() : this(listOf(), Contact("", ""), null)
-}
+)
 
 @JvmRecord
 data class ReservationResponse(
