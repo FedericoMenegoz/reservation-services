@@ -54,9 +54,6 @@ class ReservationControllerTest {
 		.contentType(MediaTypes.APPLICATION_JSON)
 		.path("/api/flights/reservation")
 		.submit(reservation)
-		.inputStream()
-		.bufferedReader()
-		.readText()
 
 
 	@Test
@@ -65,6 +62,10 @@ class ReservationControllerTest {
 		rc.startServer()
 		val client = webClient()!!
 		val r  = sentPostCheckResponse(client, reservation)
+			.inputStream()
+			.bufferedReader()
+			.readText()
+
 
 		assertEquals( """
 				{
@@ -100,10 +101,10 @@ class ReservationControllerTest {
 
 	@Test
 	fun `check get after post` () {
-		val map = mutableMapOf<Int, Reservation>(
+		val map = mutableMapOf(
 			0 to reservation,
 		)
-		val rc = ReservationController(map)
+		val rc = ReservationController(ReservationService(map))
 		rc.startServer()
 		val client = webClient()!!
 		val response = client.get().uri("http://localhost:8080").path("/api/flights/reservation/0").request()
@@ -140,5 +141,17 @@ class ReservationControllerTest {
 				.readText())
 
 		rc.stopServer()
+	}
+
+	@Test
+	fun `post without itineraryId should return BAD_REQUEST_400`() {
+		val rc = ReservationController()
+		rc.startServer()
+
+		val client = webClient()!!
+
+		val res2 = reservation.copy().apply { itineraryId = null }
+
+		assertEquals(Status.BAD_REQUEST_400, sentPostCheckResponse(client, res2).status())
 	}
 }

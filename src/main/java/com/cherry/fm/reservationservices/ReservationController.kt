@@ -12,8 +12,7 @@ import io.helidon.webserver.http.ServerResponse
 
 
 class ReservationController(
-	private val map:MutableMap<Int, Reservation> = mutableMapOf(),
-	private var counter: Int = 0
+	private val resService: ReservationService = ReservationService(),
 ) {
 	private val config: Config = Config.create()
 
@@ -31,16 +30,7 @@ class ReservationController(
 				it.get("/api/flights/reservation/{id}", { req, res -> getReservation(req, res)})
 			}.build()
 	}
-/*	object LocalDB {
-		private var counter = 0
-		fun add(reservation: Reservation): ReservationResponse {
-			val resp = ReservationResponse(counter, reservation.passengers, reservation.contact, reservation.itineraryId)
-			map[counter++] = reservation
-			return resp
-		}
-		fun get(id: Int) = map[id]
 
-	}*/
 	private fun getReservation(req: ServerRequest, res: ServerResponse) {
 		val id = req
 			.path()
@@ -51,16 +41,20 @@ class ReservationController(
 
 		res.header("Content-Type", "application/json")
 			.status(Status.OK_200)
-			.send(ReservationResponse(id, map[id]!!.passengers, map[id]!!.contact, map[id]!!.itineraryId))
+			.send(resService.getReservationById(id))
 	}
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
 		val request = req.content().`as`(Reservation::class.java)
-		map[counter] = request
+		if (request.itineraryId == null) {
+			res.status(Status.BAD_REQUEST_400).send()
+			return
+		}
+
 		res
 			.header("Content-Type", "application/json")
 			.status(Status.OK_200)
-			.send(ReservationResponse(counter++, request.passengers, request.contact, request.itineraryId))
+			.send(resService.saveReservation(request))
 	}
 
 	fun startServer() {
@@ -72,18 +66,20 @@ class ReservationController(
 	}
 }
 
-@JvmRecord
+
 data class Reservation(
-	val passengers: List<Passenger>,
-	val contact: Contact,
-	val itineraryId: String,
-)
+	var passengers: List<Passenger>,
+	var contact: Contact,
+	var itineraryId: String? = null,
+) {
+	constructor() : this(listOf(), Contact("", ""), null)
+}
 
 @JvmRecord
 data class ReservationResponse(
 	val id: Int,
 	val passengers: List<Passenger>,
 	val contact: Contact,
-	val itineraryId: String,
+	val itineraryId: String? = null,
 )
 
