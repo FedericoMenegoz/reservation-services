@@ -3,6 +3,9 @@ server:
   host: 0.0.0.0
 
 app:
+    groupId: com.cherry.fm.reservationservices
+    artifactId: cherry-manning
+    version: 0.1
     greeting: "Hello"
 
 db:
