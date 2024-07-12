@@ -1,8 +1,5 @@
 package com.cherry.fm.reservationservices
 
-import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.regex.Pattern
-
 @JvmRecord
 data class Contact (
 	val telephone: ContactNumber,
