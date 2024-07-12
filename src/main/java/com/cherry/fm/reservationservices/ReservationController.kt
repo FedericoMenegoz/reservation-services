@@ -1,6 +1,7 @@
 package com.cherry.fm.reservationservices
 
 import io.helidon.http.Status
+import io.helidon.http.media.jackson.JacksonRuntimeException
 import io.helidon.webserver.http.HttpRules
 import io.helidon.webserver.http.HttpService
 import io.helidon.webserver.http.ServerRequest
@@ -26,7 +27,13 @@ class ReservationController(
 	}
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
-		var request = req.content().`as`(Reservation::class.java)
+		var request: Reservation
+		try {
+			request = req.content().`as`(Reservation::class.java)
+		} catch (e: JacksonRuntimeException) {
+			throw BadFormatException()
+		}
+
 		try {
 			request = request.copy(passengers = request.passengers.map {
 				it.copy(firstName = Name(it.firstName.toString()))

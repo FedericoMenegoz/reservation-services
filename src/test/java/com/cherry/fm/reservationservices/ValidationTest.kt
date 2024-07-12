@@ -92,4 +92,17 @@ fun `value classes parsing with invalid lastname test`(){
 			}
 		""".trimIndent()).inputStream().bufferedReader().readText())
 	}
+@Test
+fun `bad format test`(){
+		val server: Server = Server(controller = ReservationController())
+		server.startServer()
+		val client = webClient()!!
+
+		assertEquals("{\"code\":400,\"shortDescription\":\"JSON format error\",\"reason\":\"400 Bad Request\"}",client
+			.post()
+			.uri("http://localhost:" + server.port)
+			.path("/api/flights/reservation")
+			.contentType(MediaTypes.APPLICATION_JSON)
+			.submit("{bad format}").inputStream().bufferedReader().readText())
+	}
 }
