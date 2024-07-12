@@ -6,9 +6,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.helidon.config.Config
 import io.helidon.http.media.jackson.JacksonSupport
 import io.helidon.webserver.WebServer
+import io.helidon.webserver.http.HttpService
 
 class Server(
-	controller: Controller,
+	controller: HttpService,
 	port: Int = 8080,
 ) {
 	private val config: Config = Config.create()
@@ -24,7 +25,7 @@ class Server(
 				}))
 			}
 			.routing {
-				controller.initEndpoints(it)
+				it.register(controller)
 			}.port(port).build()
 	}
 

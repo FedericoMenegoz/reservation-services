@@ -3,11 +3,9 @@ package com.cherry.fm.reservationservices
 import io.helidon.config.Config
 import io.helidon.config.MissingValueException
 import io.helidon.http.Status
-import io.helidon.webserver.http.HttpRouting
-import io.helidon.webserver.http.ServerRequest
-import io.helidon.webserver.http.ServerResponse
+import io.helidon.webserver.http.*
 
-class InfoController : Controller {
+class InfoController : HttpService {
 	private val config: Config = Config.create()
 
 	private fun getInfo(req: ServerRequest, res: ServerResponse) {
@@ -33,7 +31,8 @@ class InfoController : Controller {
 
 	}
 
-	override fun initEndpoints(builder: HttpRouting.Builder) {
-		builder.get("/info/{attr}", { req, res -> getInfo(req, res)})
+
+	override fun routing(rules: HttpRules) {
+		rules.get("/info/{attr}", this::getInfo)
 	}
 }

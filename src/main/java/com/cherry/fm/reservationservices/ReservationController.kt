@@ -2,14 +2,12 @@ package com.cherry.fm.reservationservices
 
 import io.helidon.config.Config
 import io.helidon.http.Status
-import io.helidon.webserver.http.HttpRouting
-import io.helidon.webserver.http.ServerRequest
-import io.helidon.webserver.http.ServerResponse
+import io.helidon.webserver.http.*
 
 
 class ReservationController(
 	private val resService: ReservationService = ReservationService(),
-) : Controller {
+) : HttpService {
 
 	private fun getReservation(req: ServerRequest, res: ServerResponse) {
 		val id = req
@@ -40,9 +38,11 @@ class ReservationController(
 		println("POST response sent...")
 	}
 
-	override fun initEndpoints(builder: HttpRouting.Builder) {
-		builder.post("/api/flights/reservation",  { req, res -> makeReservation(req, res)})
-		builder.get("/api/flights/reservation/{id}", { req, res -> getReservation(req, res)})
+
+	override fun routing(rules: HttpRules) {
+		rules.post("/api/flights/reservation", this::makeReservation)
+		rules.get("/api/flights/reservation/{id}", this::getReservation)
+
 	}
 }
 
