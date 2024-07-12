@@ -20,13 +20,13 @@ class InfoControllerTest {
 		.build()
 	@Test
 	fun `testing basic info mock`() {
-		val infoController = InfoController()
-		infoController.startServer()
+		val server: Server = Server(controller = InfoController())
+		server.startServer()
 		val client = webClient()!!
 		assertEquals("com.cherry.fm.reservationservices", client.get().uri("http://localhost:8080/").path("info/groupId").request().inputStream().bufferedReader().readText())
 		assertEquals("cherry-manning", client.get().uri("http://localhost:8080/").path("info/artifactId").request().inputStream().bufferedReader().readText())
 		assertEquals("0.1", client.get().uri("http://localhost:8080/").path("info/version").request().inputStream().bufferedReader().readText())
 		assertEquals("ciao not found.", client.get().uri("http://localhost:8080/").path("info/ciao").request().inputStream().bufferedReader().readText())
-		infoController.stopServer()
+		server.stopServer()
 	}
 }

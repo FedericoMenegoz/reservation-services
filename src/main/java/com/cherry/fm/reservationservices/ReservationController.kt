@@ -1,37 +1,15 @@
 package com.cherry.fm.reservationservices
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.helidon.config.Config
 import io.helidon.http.Status
-import io.helidon.http.media.jackson.JacksonSupport
-import io.helidon.webserver.WebServer
+import io.helidon.webserver.http.HttpRouting
 import io.helidon.webserver.http.ServerRequest
 import io.helidon.webserver.http.ServerResponse
 
 
 class ReservationController(
 	private val resService: ReservationService = ReservationService(),
-	val port: Int = 8080,
-) {
-	private val config: Config = Config.create()
-
-	private val server by lazy {
-		println("Building server...")
-		WebServer.builder()
-//			.config(config.get("server"))
-			.mediaContext {
-				it.addMediaSupport(JacksonSupport.create(ObjectMapper().apply {
-					registerModule(JavaTimeModule())
-					configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-				}))
-			}
-			.routing {
-				it.post("/api/flights/reservation",  { req, res -> makeReservation(req, res)})
-				it.get("/api/flights/reservation/{id}", { req, res -> getReservation(req, res)})
-			}.port(port).build()
-	}
+) : Controller {
 
 	private fun getReservation(req: ServerRequest, res: ServerResponse) {
 		val id = req
@@ -62,22 +40,9 @@ class ReservationController(
 		println("POST response sent...")
 	}
 
-	fun startServer() {
-		try	{
-			server.start()
-			println("Server started, listening on ${server.port()}")
-		} catch (e: Exception) {
-			println("Server start error: ${e.message}")
-		}
-	}
-
-	fun stopServer() {
-		try {
-			server.stop()
-			println("Server stopped.")
-		} catch (e: Exception) {
-			println("Server stopped error: ${e.message}")
-		}
+	override fun initEndpoints(builder: HttpRouting.Builder) {
+		builder.post("/api/flights/reservation",  { req, res -> makeReservation(req, res)})
+		builder.get("/api/flights/reservation/{id}", { req, res -> getReservation(req, res)})
 	}
 }
 
