@@ -26,7 +26,7 @@ class ValidationTest{
 		server.startServer()
 		val client = webClient()!!
 
-		assertEquals("{\"code\":1,\"shortDescription\":\"Invalid first name.\",\"reason\":\"A name must be of length from 2 to 20.\"}",client
+		assertEquals("{\"code\":400,\"shortDescription\":\"Validation error\",\"reason\":\"400 Bad Request\"}",client
 			.post()
 			.uri("http://localhost:" + server.port)
 			.path("/api/flights/reservation")
@@ -62,7 +62,7 @@ fun `value classes parsing with invalid lastname test`(){
 		server.startServer()
 		val client = webClient()!!
 
-		assertEquals("{\"code\":2,\"shortDescription\":\"Invalid last name.\",\"reason\":\"A name must be of length from 2 to 20.\"}",client
+		assertEquals("{\"code\":400,\"shortDescription\":\"Validation error\",\"reason\":\"400 Bad Request\"}",client
 			.post()
 			.uri("http://localhost:" + server.port)
 			.path("/api/flights/reservation")
