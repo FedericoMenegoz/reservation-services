@@ -13,7 +13,6 @@ import java.time.LocalDate
 import java.time.Month
 import java.util.function.Consumer
 
-
 class ReservationControllerTest {
 	private val reservation = Reservation(
 		passengers =
@@ -31,8 +30,8 @@ class ReservationControllerTest {
 			)
 		)),
 		contact = Contact(
-			ContactNumber("4444-1234"),
-			ContactEmail("flights@manning.com")
+			telephone = ContactNumber("4444-1234"),
+			email = ContactEmail("flights@manning.com")
 		),
 		itineraryId = "f2f61e3c"
 	)
@@ -166,8 +165,8 @@ class ReservationControllerTest {
 				)
 			)),
 			contact = Contact(
-				ContactNumber("4444-1234"),
-				ContactEmail("flights@manning.com")
+				telephone = ContactNumber("4444-1234"),
+				email = ContactEmail("flights@manning.com")
 			),
 			itineraryId = null
 		)

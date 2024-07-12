@@ -74,20 +74,8 @@ class ReservationController(
 
 @JvmRecord
 data class Reservation(
+	val id: Int? = null,
 	val passengers: List<Passenger>,
 	val contact: Contact,
 	val itineraryId: String?,
-) {
-	init {
-		println("Init reservation")
-	}
-}
-
-@JvmRecord
-data class ReservationResponse(
-	val id: Int,
-	val passengers: List<Passenger>,
-	val contact: Contact,
-	val itineraryId: String? = null,
 )
-
