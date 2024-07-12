@@ -1,7 +1,6 @@
 package com.cherry.fm.reservationservices
 
 import io.helidon.http.Status
-import io.helidon.http.media.jackson.JacksonRuntimeException
 import io.helidon.webserver.http.HttpRules
 import io.helidon.webserver.http.HttpService
 import io.helidon.webserver.http.ServerRequest
@@ -34,10 +33,7 @@ class ReservationController(
 			})
 		}
 		catch (e: IllegalArgumentException) {
-			val errDTO = ErrorDTO(1, "Invalid first name.", e.message!!)
-			res.status(Status.BAD_REQUEST_400)
-				.send(errDTO)
-			return
+			throw NotValidException()
 		}
 		try {
 			request = request.copy(passengers = request.passengers.map {
@@ -45,10 +41,7 @@ class ReservationController(
 			})
 		}
 		catch (e: IllegalArgumentException) {
-			val errDTO = ErrorDTO(2, "Invalid last name.", e.message!!)
-			res.status(Status.BAD_REQUEST_400)
-				.send(errDTO)
-			return
+			throw NotValidException()
 		}
 		if (request.itineraryId == null) {
 			res.status(Status.BAD_REQUEST_400).send()
