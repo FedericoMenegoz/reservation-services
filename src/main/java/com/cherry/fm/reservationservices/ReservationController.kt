@@ -1,8 +1,10 @@
 package com.cherry.fm.reservationservices
 
-import io.helidon.config.Config
 import io.helidon.http.Status
-import io.helidon.webserver.http.*
+import io.helidon.webserver.http.HttpRules
+import io.helidon.webserver.http.HttpService
+import io.helidon.webserver.http.ServerRequest
+import io.helidon.webserver.http.ServerResponse
 
 
 class ReservationController(
@@ -46,11 +48,11 @@ class ReservationController(
 	}
 }
 
-
+@JvmRecord
 data class Reservation(
-	var passengers: List<Passenger> = listOf(),
-	var contact: Contact = Contact("", ""),
-	var itineraryId: String? = null,
+	val passengers: List<Passenger>,
+	val contact: Contact,
+	val itineraryId: String?,
 )
 
 @JvmRecord

@@ -20,19 +20,19 @@ class ReservationControllerTest {
 		listOf(Passenger(
 			PassengerType.ADULT,
 			Gender.MALE,
-			LocalDate.of(1980, Month.JANUARY, 12),
-			"ARG",
-			"Andres",
-			"Sacco",
+			Birth(LocalDate.of(1980, Month.JANUARY, 12)),
+			Nationality("ARG"),
+			Name("Andres"),
+			Name("Sacco"),
 			PassengerDocument(
-				"20123456783",
+				DocumentNumber("20123456783"),
 				DocumentType.PASSPORT,
-				LocalDate.of(2027, Month.JULY, 21 )
+				ExpirationDate(LocalDate.of(2027, Month.JULY, 21 ))
 			)
 		)),
 		contact = Contact(
-			"4444-1234",
-			"flights@manning.com"
+			ContactNumber("4444-1234"),
+			ContactEmail("flights@manning.com")
 		),
 		itineraryId = "f2f61e3c"
 	)
@@ -150,7 +150,27 @@ class ReservationControllerTest {
 
 		val client = webClient()!!
 
-		val res2 = reservation.copy().apply { itineraryId = null }
+		val res2 = Reservation(
+			passengers =
+			listOf(Passenger(
+				PassengerType.ADULT,
+				Gender.MALE,
+				Birth(LocalDate.of(1980, Month.JANUARY, 12)),
+				Nationality("ARG"),
+				Name("Andres"),
+				Name("Sacco"),
+				PassengerDocument(
+					DocumentNumber("20123456783"),
+					DocumentType.PASSPORT,
+					ExpirationDate(LocalDate.of(2027, Month.JULY, 21 ))
+				)
+			)),
+			contact = Contact(
+				ContactNumber("4444-1234"),
+				ContactEmail("flights@manning.com")
+			),
+			itineraryId = null
+		)
 
 		assertEquals(Status.BAD_REQUEST_400, sentPostCheckResponse(client, res2).status())
 
