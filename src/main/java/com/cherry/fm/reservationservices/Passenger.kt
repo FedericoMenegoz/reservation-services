@@ -19,7 +19,7 @@ value class Name(private val name: String) {
 		require(
 			name.isNotBlank() && name.length >= 2 && name.length <= 20
 		) {
-			"first name must be of length from 2 to 20"
+			"A name must be of length from 2 to 20."
 		}
 	}
 

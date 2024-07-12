@@ -10,7 +10,7 @@ import io.helidon.webserver.http.HttpService
 
 class Server(
 	controller: HttpService,
-	port: Int = 8080,
+	val port: Int = 8080,
 ) {
 	private val config: Config = Config.create()
 

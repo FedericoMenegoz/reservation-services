@@ -12,6 +12,7 @@ data class PassengerDocument(
 @JvmInline
 value class ExpirationDate (val date: LocalDate) {
 	init {
+		println(date)
 		require(date.isAfter(LocalDate.now())) {
 			"Date is expired."
 		}

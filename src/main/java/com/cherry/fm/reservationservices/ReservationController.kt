@@ -26,7 +26,29 @@ class ReservationController(
 	}
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
-		val request = req.content().`as`(Reservation::class.java)
+		var request = req.content().`as`(Reservation::class.java)
+		try {
+			request = request.copy(passengers = request.passengers.map {
+				it.copy(firstName = Name(it.firstName.toString()))
+			})
+		}
+		catch (e: IllegalArgumentException) {
+			val errDTO = ErrorDTO(1, "Invalid first name.", e.message!!)
+			res.status(Status.BAD_REQUEST_400)
+				.send(errDTO)
+			return
+		}
+		try {
+			request = request.copy(passengers = request.passengers.map {
+				it.copy(lastName = Name(it.lastName.toString()))
+			})
+		}
+		catch (e: IllegalArgumentException) {
+			val errDTO = ErrorDTO(2, "Invalid last name.", e.message!!)
+			res.status(Status.BAD_REQUEST_400)
+				.send(errDTO)
+			return
+		}
 		if (request.itineraryId == null) {
 			res.status(Status.BAD_REQUEST_400).send()
 			println("POST error itineraryId is undefined...")
@@ -38,6 +60,7 @@ class ReservationController(
 			.status(Status.OK_200)
 			.send(resService.saveReservation(request))
 		println("POST response sent...")
+
 	}
 
 
@@ -53,7 +76,11 @@ data class Reservation(
 	val passengers: List<Passenger>,
 	val contact: Contact,
 	val itineraryId: String?,
-)
+) {
+	init {
+		println("Init reservation")
+	}
+}
 
 @JvmRecord
 data class ReservationResponse(
