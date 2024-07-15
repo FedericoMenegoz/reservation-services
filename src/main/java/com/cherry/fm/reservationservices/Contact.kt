@@ -2,7 +2,6 @@ package com.cherry.fm.reservationservices
 
 @JvmRecord
 data class Contact (
-	val id: Long? = null,
 	val telephone: ContactNumber,
 	val email: ContactEmail,
 )

@@ -1,4 +1,4 @@
-package com.cherry.fm.reservationservices
+package com.cherry.fm.reservationservices.error
 
 class ErrorDTO (
 	val code: Int,

@@ -1,1 +1,5 @@
-com.cherry.fm.reservationservices.data.ContactMapperProvider
+com.cherry.fm.reservationservices.data.contact.ContactMapperProvider
+com.cherry.fm.reservationservices.data.reservation.ReservationMapperProvider
+com.cherry.fm.reservationservices.data.reservation_passengers.ReservationPassengersMapperProvider
+com.cherry.fm.reservationservices.data.passenger.PassengerMapperProvider
+com.cherry.fm.reservationservices.data.document.DocumentMapperProvider

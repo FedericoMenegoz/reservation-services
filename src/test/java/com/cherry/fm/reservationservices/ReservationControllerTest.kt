@@ -1,5 +1,6 @@
 package com.cherry.fm.reservationservices
 
+import com.cherry.fm.reservationservices.services.ReservationService
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -24,7 +25,7 @@ class ReservationControllerTest {
 			Name("Andres"),
 			Name("Sacco"),
 			PassengerDocument(
-				DocumentNumber("20123456783"),
+				"20123456783",
 				DocumentType.PASSPORT,
 				ExpirationDate(LocalDate.of(2027, Month.JULY, 21 ))
 			)
@@ -68,7 +69,7 @@ class ReservationControllerTest {
 
 		assertEquals( """
 				{
-				   "id":0,
+				   "id":13,
 				   "passengers":[
 				      {
 				         "type":"ADULT",
@@ -100,38 +101,35 @@ class ReservationControllerTest {
 
 	@Test
 	fun `check get after post` () {
-		val map = mutableMapOf(
-			0 to reservation,
-		)
-		val server = Server(ReservationController(ReservationService(map)))
+		val server = Server(ReservationController(ReservationService()))
 		server.startServer()
 		val client = webClient()!!
-		val response = client.get().uri("http://localhost:8080").path("/api/flights/reservation/0").request()
+		val response = client.get().uri("http://localhost:8080").path("/api/flights/reservation/1").request()
 
 		assertEquals(Status.OK_200, response.status())
 		assertEquals("""
 				{
-				   "id":0,
+				   "id":1,
 				   "passengers":[
 				      {
 				         "type":"ADULT",
-				         "gender":"MALE",
+				         "gender":"FEMALE",
 				         "birth":"1980-01-12",
 				         "nationality":"ARG",
 				         "firstName":"Andres",
 				         "lastName":"Sacco",
 				         "document":{
-				            "number":"20123456783",
+				            "number":"3",
 				            "type":"PASSPORT",
-				            "expiration":"2027-07-21"
+				            "expiration":"2025-02-28"
 				         }
 				      }
 				   ],
 				   "contact":{
-				      "telephone":"4444-1234",
+				      "telephone":"4444-2345",
 				      "email":"flights@manning.com"
 				   },
-				   "itineraryId":"f2f61e3c"
+				   "itineraryId":"4"
 				}
 			""".trimIndent().filter { it.toString().isNotBlank() },
 			response
@@ -159,7 +157,7 @@ class ReservationControllerTest {
 				Name("Andres"),
 				Name("Sacco"),
 				PassengerDocument(
-					DocumentNumber("20123456783"),
+					"20123456783",
 					DocumentType.PASSPORT,
 					ExpirationDate(LocalDate.of(2027, Month.JULY, 21 ))
 				)

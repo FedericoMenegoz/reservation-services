@@ -1,4 +1,4 @@
-package com.cherry.fm.reservationservices
+package com.cherry.fm.reservationservices.error
 
 import io.helidon.http.Status
 

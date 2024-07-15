@@ -1,5 +1,8 @@
 package com.cherry.fm.reservationservices
 
+import com.cherry.fm.reservationservices.error.BadFormatException
+import com.cherry.fm.reservationservices.error.NotValidException
+import com.cherry.fm.reservationservices.services.ReservationService
 import io.helidon.http.Status
 import io.helidon.http.media.jackson.JacksonRuntimeException
 import io.helidon.webserver.http.HttpRules
@@ -18,7 +21,8 @@ class ReservationController(
 			.pathParameters()
 			.get("id")
 			.toString()
-			.toInt()
+			.toLong()
+
 		println("GET request with id: $id")
 		res.header("Content-Type", "application/json")
 			.status(Status.OK_200)
@@ -74,7 +78,7 @@ class ReservationController(
 
 @JvmRecord
 data class Reservation(
-	val id: Int? = null,
+	val id: Long? = null,
 	val passengers: List<Passenger>,
 	val contact: Contact,
 	val itineraryId: String?,
