@@ -3,85 +3,45 @@
     <head>
         <meta charset="UTF-8">
         <title>Test</title>
-        <link rel="stylesheet" href="./style.css"/>
+        <link rel="stylesheet" href="style.css">
     </head>
-    <body>
+    <body class="px-4 py-6 flex flex-col items-center justify-center gap-10" hx-ext="response-targets, json-enc, client-side-templates">
         <script src="./htmx.min.js"></script>
         <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
         <script src="https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js"></script>
+        <script src="https://unpkg.com/htmx.org@1.9.12/dist/ext/response-targets.js"></script>
         <script src="https://unpkg.com/mustache@latest"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            document.addEventListener('htmx:afterRequest', e => {
+                const code = e.detail.xhr.status.toString()
+                let errorBannerWrap = document.getElementById("modal-wrap");
+                let errorBanner = document.getElementById("modal");
+                let res = document.getElementById("result")
+                if (!code.startsWith('2')) {
+                    res.style = "display: none"
+                    errorBanner.innerHTML = `<div class="bg-red-500 px-4 py-3 rounded-t-xl flex justify-between">
+                                                <h1 class="text-2xl">Error!</h1>
+                                                <button onclick='document.getElementById("modal-wrap").style = "display: none"' class="max-w-7 border-0 p-0">X</button>
+                                            </div>
+                                            <div class="bg-white p-4 rounded-b-xl">
+                                                <h1 class="text-xl">Reservation failed!</h1>
+                                              <p>${JSON.parse(e.detail.xhr.responseText)["shortDescription"]}</p>
+                                            </div>`
+                    errorBannerWrap.style.display = 'flex';
+                }
+                else{
+                    errorBannerWrap.style = "display: none"
+                    res.style = "display: block"
 
-        <div hx-ext="client-side-templates" style="display: flex; flex-direction: row; gap: 50px">
-            <form hx-ext="json-enc"
-                  id="passenger"
-                  class="form"
-                  hx-post="/api/flights/reservation"
-                  hx-target="#result"
-                  hx-swap="innerHTML"
-                  mustache-template="foo"
-            >
-                <label for="firstName">First Name</label>
-                <input id="firstName" name="firstName" value="Isaia" pattern="[a-zA-Z]{3,20}" required>
-                <label for="lastName">Last Name</label>
-                <input id="lastName" name="lastName" value="Tonini" pattern="[a-zA-Z]{3,20}" required>
-                <label for="gender">Gender</label>
-                <select id="gender" name="gender" required>
-                    <option value="MALE" selected>Male</option>
-                    <option value="FEMALE">Female</option>
-                    <option value="NOT_SPECIFY">Not specified</option>
-                </select>
-                <label for="nationality">Nationality</label>
-                <input id="nationality" name="nationality" value="ITA" pattern="[A-Z]{3}" required>
-                <label for="type">Type</label>
-                <select id="type" name="type" required>
-                    <option value="INFANT">Infant</option>
-                    <option value="CHILDREN">Child</option>
-                    <option value="ADULT" selected>Adult</option>
-                </select>
-                <label for="birth">Birth Date</label>
-                <input id="birth" type="date" value="2003-09-20" name="birth" required>
-                <hr/>
-                <label for="documentExpiration">Document Expiration Date</label>
-                <input id="documentExpiration" type="date" value="2033-09-20" name="documentExpiration" required>
-                <label for="number">Document Number</label>
-                <input id="number" value="sdhiasda" name="documentNumber" required>
-                <label for="documentType">Document Type</label>
-                <select id="documentType" name="documentType" required>
-                    <option value="PASSPORT">Passport</option>
-                    <option value="NATIONAL" selected>National</option>
-                </select>
-                <hr/>
-
-                <label for="contactNum">Telephone Number</label>
-                <input id="contactNum" value="1234-4321" name="contactTelephone" pattern="[0-9]{4}-[0-9]{4}" required>
-                <label for="email">Email</label>
-                <input id="email" type="email" value="abc@gmail.com" name="contactEmail" required>
-                <input type="hidden" value="asdf-gfds-hdjk" name="itineraryId">
-
-                <button type="submit"
-                       form="passenger"
-                >Invia</button>
-            </form>
-            <div>
-                <div id="result"></div>
-                <template id="foo">
-                    <h2>Reservation succesfull:</h2>
-                    <p><b>Reservation id:</b> {{id}}</p>
-                    <p><b>User email:</b> {{contact.email}}</p>
-                    {{#passengers}}
-                        <p><b>Firstname:</b> {{firstName}}</p>
-                        <p><b>Lastname:</b> {{lastName}}</p>
-                        <p><b>Type:</b> {{type}}</p>
-                        <p><b>Gender:</b> {{gender}}</p>
-                        <p><b>Birth Date:</b> {{birth}}</p>
-
-                        <p><b>Document number:</b> {{document.number}}</p>
-                    <p><b>Document expiration date:</b> {{document.expiration}}</p>
-                    <p><b>Document type:</b> {{document.type}}</p>
-
-                    {{/passengers}}
-                    <p><b>Itinerary Id:</b> {{itineraryId}}</p>
-                </template>
+                }
+            });
+        </script>
+        <h1 class="text-5xl">Reservation Service</h1>
+        <div id="content" class="w-full h-full">
+            <div class="w-full flex justify-center gap-6">
+                <button hx-get="./reservForm.html" hx-target="#content">Make a Reservation</button>
+                <button hx-get="./reservationInfo.html" hx-target="#content">Get Reservation</button>
             </div>
         </div>
     </body>

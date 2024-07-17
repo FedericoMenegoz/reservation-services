@@ -18,4 +18,5 @@ value class ExpirationDate (val date: LocalDate) {
 	}
 
 	override fun toString(): String = date.toString()
+	fun toDate() = date
 }

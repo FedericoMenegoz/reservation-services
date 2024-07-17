@@ -1,6 +1,24 @@
-.form{
+input, select{
+    border-width: 2px;
+    border-color: darkgray;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 3px 5px!important;
+    width: 30vw
+}
+
+button{
+    border-width: 2px;
+    border-color: darkgray;
+    border-style: solid;
+    border-radius: 4px;
+    padding: 3px 5px;
+    width: 30vw
+}
+
+#modal-wrap  {
     display: flex;
-    flex-direction: column;
-    gap: 5px;
-    width: 400px;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
 }

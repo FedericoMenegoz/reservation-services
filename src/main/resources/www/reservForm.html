@@ -1,0 +1,78 @@
+<div class="flex gap-20 w-full">
+    <form
+          id="passenger"
+          class="flex flex-col gap-2 w-96"
+          hx-post="/api/flights/reservation"
+          hx-target="#result"
+          hx-target-4*="#modal"
+          mustache-template="foo"
+    >
+        <label for="firstName">First Name</label>
+        <input id="firstName" name="firstName" value="Isaia" pattern="[a-zA-Z]{3,20}" required>
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" value="Tonini" pattern="[a-zA-Z]{3,20}" required>
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" required>
+            <option value="MALE" selected>Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="NOT_SPECIFY">Not specified</option>
+        </select>
+        <label for="nationality">Nationality</label>
+        <input id="nationality" name="nationality" value="ITA" pattern="[A-Z]{3}" required>
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+            <option value="INFANT">Infant</option>
+            <option value="CHILDREN">Child</option>
+            <option value="ADULT" selected>Adult</option>
+        </select>
+        <label for="birth">Birth Date</label>
+        <input id="birth" type="date" value="1000-09-20" name="birth" required>
+        <hr/>
+        <label for="documentExpiration">Document Expiration Date</label>
+        <input id="documentExpiration" type="date" value="2033-09-20" name="documentExpiration" required>
+        <label for="number">Document Number</label>
+        <input id="number" value="sdhiasda" name="documentNumber" required>
+        <label for="documentType">Document Type</label>
+        <select id="documentType" name="documentType" required>
+            <option value="PASSPORT">Passport</option>
+            <option value="NATIONAL" selected>National</option>
+        </select>
+        <hr/>
+
+        <label for="contactNum">Telephone Number</label>
+        <input id="contactNum" value="1234-4321" name="contactTelephone" pattern="[0-9]{4}-[0-9]{4}" required>
+        <label for="email">Email</label>
+        <input id="email" type="email" value="abc@gmail.com" name="contactEmail" required>
+        <input type="hidden" value="asdf-gfds-hdjk" name="itineraryId">
+
+        <button type="submit"
+                form="passenger"
+        >Invia</button>
+    </form>
+    <div>
+        <div id="result"></div>
+        <template id="foo">
+            <h2 class="text-3xl" >Reservation succesfull:</h2>
+            <p><b>Reservation id:</b> {{id}}</p>
+            <p><b>User email:</b> {{contact.email}}</p>
+            {{#passengers}}
+            <p><b>Firstname:</b> {{firstName}}</p>
+            <p><b>Lastname:</b> {{lastName}}</p>
+            <p><b>Type:</b> {{type}}</p>
+            <p><b>Gender:</b> {{gender}}</p>
+            <p><b>Birth Date:</b> {{birth}}</p>
+
+            <p><b>Document number:</b> {{document.number}}</p>
+            <p><b>Document expiration date:</b> {{document.expiration}}</p>
+            <p><b>Document type:</b> {{document.type}}</p>
+
+            {{/passengers}}
+            <p><b>Itinerary Id:</b> {{itineraryId}}</p>
+        </template>
+    </div>
+    <div id="modal-wrap" class="fixed inset-0 m-auto">
+        <div id="modal" class="w-[40vw] h-auto  rounded-2xl border-2 border-black">
+
+        </div>
+    </div>
+</div>

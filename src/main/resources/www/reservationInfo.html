@@ -1,0 +1,44 @@
+<div class="flex gap-20 w-full">
+    </script>
+    <form
+            id="getResById"
+            class="flex flex-col gap-2 w-96"
+            hx-get="/api/flights/reservation/"
+            hx-target="#result"
+            hx-target-4*="#modal"
+            mustache-template="foo"
+    >
+        <label for="id">First Name</label>
+        <input id="id" name="id" value="2" pattern="[0-9]+" required>
+
+        <button type="submit"
+                form="getResById"
+        >Invia</button>
+    </form>
+    <div>
+        <div id="result"></div>
+        <template id="foo">
+            <h2 class="text-3xl" >Reservation succesfull:</h2>
+            <p><b>Reservation id:</b> {{id}}</p>
+            <p><b>User email:</b> {{contact.email}}</p>
+            {{#passengers}}
+            <p><b>Firstname:</b> {{firstName}}</p>
+            <p><b>Lastname:</b> {{lastName}}</p>
+            <p><b>Type:</b> {{type}}</p>
+            <p><b>Gender:</b> {{gender}}</p>
+            <p><b>Birth Date:</b> {{birth}}</p>
+
+            <p><b>Document number:</b> {{document.number}}</p>
+            <p><b>Document expiration date:</b> {{document.expiration}}</p>
+            <p><b>Document type:</b> {{document.type}}</p>
+
+            {{/passengers}}
+            <p><b>Itinerary Id:</b> {{itineraryId}}</p>
+        </template>
+    </div>
+    <div id="modal-wrap" class="fixed inset-0 m-auto">
+        <div id="modal" class="w-[40vw] h-auto  rounded-2xl border-2 border-black">
+
+        </div>
+    </div>
+</div>

@@ -32,21 +32,23 @@ class ReservationController(
 	}
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
+		val unparsed = req.content()
+		//println(unparsed.inputStream().bufferedReader().readText())
 		var request: Reservation
 		try {
-			val requ = req.content().`as`(ReservationRequest::class.java)
+			val requ = unparsed.`as`(ReservationRequest::class.java)
 			request = Reservation(
 				id = null,
 				passengers = listOf(
 					Passenger(
 						firstName = requ.firstName,
 						lastName = requ.lastName,
-						birth = requ.birth,
+						birth = Birth(requ.birth.toDate()),
 						type = requ.type,
 						gender = requ.gender,
 						nationality = requ.nationality,
 						document = PassengerDocument(
-							expiration = requ.documentExpiration,
+							expiration = ExpirationDate(requ.documentExpiration.toDate()),
 							type = requ.documentType,
 							number = requ.documentNumber
 						)
@@ -60,6 +62,8 @@ class ReservationController(
 			)
 		} catch (e: JacksonRuntimeException) {
 			throw BadFormatException()
+		} catch (e: IllegalArgumentException) {
+			throw NotValidException()
 		}
 
 		try {
