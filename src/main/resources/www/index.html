@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="./style.css"/>
+</head>
+<body>
+    <script src="./htmx.min.js"></script>
+    <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
+<!--    <div hx-get="/api/flights/reservation/1" hx-target="#result" hx-trigger="mouseenter once" style="width: 100px; height: 100px; background: red"></div>-->
+    <form hx-post="/api/flights/reservation"
+          hx-target="#result"
+          hx-ext="json-enc"
+          id="passenger"
+          class="form"
+          hx-trigger="submit"
+    >
+        <label for="firstName">First Name</label>
+        <input id="firstName" name="firstName" value="Isaia" required>
+        <label for="lastName">Last Name</label>
+        <input id="lastName" name="lastName" value="Tonini">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender" >
+            <option value="MALE" selected>Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="NOT_SPECIFY">Not specified</option>
+        </select>
+        <label for="nationality">Nationality</label>
+        <input id="nationality" name="nationality" value="ITA">
+        <label for="type">Type</label>
+        <select id="type" name="type">
+            <option value="INFANT">Infant</option>
+            <option value="CHILDREN">Child</option>
+            <option value="ADULT" selected>Adult</option>
+        </select>
+        <label for="birth">Birth Date</label>
+        <input id="birth" type="date" value="2003-09-20" name="birth">
+        <hr/>
+        <label for="documentExpiration">Document Expiration Date</label>
+        <input id="documentExpiration" type="date" value="2033-09-20" name="documentExpiration">
+        <label for="number">Document Number</label>
+        <input id="number" value="sdhiasda" name="documentNumber">
+        <label for="documentType">Document Type</label>
+        <select id="documentType" name="documentType">
+            <option value="PASSPORT">Passport</option>
+            <option value="NATIONAL" selected>National</option>
+        </select>
+        <hr/>
+
+        <label for="contactNum">Telephone Number</label>
+        <input id="contactNum" value="1234-4321" name="contactTelephone">
+        <label for="email">Email</label>
+        <input id="email" value="abc@gmail.com" name="contactEmail">
+        <input type="hidden" value="asdf-gfds-hdjk" name="itineraryId">
+
+        <input type="submit"
+               value="Submit"
+               form="passenger"
+        >
+
+        <div id="result"></div>
+    </form>
+</body>
+</html>

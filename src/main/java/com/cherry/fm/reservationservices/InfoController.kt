@@ -31,7 +31,6 @@ class InfoController : HttpService {
 
 	}
 
-
 	override fun routing(rules: HttpRules) {
 		rules.get("/info/{attr}", this::getInfo)
 	}

@@ -9,6 +9,7 @@ import io.helidon.webserver.http.HttpRules
 import io.helidon.webserver.http.HttpService
 import io.helidon.webserver.http.ServerRequest
 import io.helidon.webserver.http.ServerResponse
+import java.util.StringJoiner
 
 
 class ReservationController(
@@ -33,7 +34,30 @@ class ReservationController(
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
 		var request: Reservation
 		try {
-			request = req.content().`as`(Reservation::class.java)
+			val requ = req.content().`as`(ReservationRequest::class.java)
+			request = Reservation(
+				id = null,
+				passengers = listOf(
+					Passenger(
+						firstName = requ.firstName,
+						lastName = requ.lastName,
+						birth = requ.birth,
+						type = requ.type,
+						gender = requ.gender,
+						nationality = requ.nationality,
+						document = PassengerDocument(
+							expiration = requ.documentExpiration,
+							type = requ.documentType,
+							number = requ.documentNumber
+						)
+					)
+				),
+				contact = Contact(
+					telephone = requ.contactTelephone,
+					email = requ.contactEmail
+				),
+				itineraryId = requ.itineraryId
+			)
 		} catch (e: JacksonRuntimeException) {
 			throw BadFormatException()
 		}
@@ -72,7 +96,6 @@ class ReservationController(
 	override fun routing(rules: HttpRules) {
 		rules.post("/api/flights/reservation", this::makeReservation)
 		rules.get("/api/flights/reservation/{id}", this::getReservation)
-
 	}
 }
 
@@ -82,4 +105,21 @@ data class Reservation(
 	val passengers: List<Passenger>,
 	val contact: Contact,
 	val itineraryId: String?,
+)
+
+
+@JvmRecord
+data class ReservationRequest(
+	val firstName: Name,
+	val lastName: Name,
+	val type: PassengerType,
+	val gender: Gender,
+	val birth: Birth,
+	val nationality: Nationality,
+	val documentExpiration: ExpirationDate,
+	val documentNumber: String,
+	val documentType: DocumentType,
+	val contactTelephone: ContactNumber,
+	val contactEmail: ContactEmail,
+	val itineraryId: String?
 )

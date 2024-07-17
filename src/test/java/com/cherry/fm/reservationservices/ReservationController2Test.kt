@@ -89,7 +89,7 @@ class ReservationController2Test {
 
 	@Test
 	fun `check first post response`() {
-		val server = Server(ReservationController(reservationService))
+		val server = Server(controller = arrayOf(ReservationController(reservationService)))
 		server.startServer()
 
 		whenever(reservationService.saveReservation(reservation)).thenReturn(reservation.copy(id = 1234))

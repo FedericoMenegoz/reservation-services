@@ -58,7 +58,7 @@ class ReservationControllerTest {
 
 	@Test
 	fun `check first post response`() {
-		val server = Server(ReservationController())
+		val server = Server(controller = arrayOf(ReservationController(ReservationService())))
 		server.startServer()
 		val client = webClient()!!
 		val r  = sentPostCheckResponse(client, reservation)
@@ -101,7 +101,7 @@ class ReservationControllerTest {
 
 	@Test
 	fun `check get after post` () {
-		val server = Server(ReservationController(ReservationService()))
+		val server = Server(controller = arrayOf(ReservationController(ReservationService())))
 		server.startServer()
 		val client = webClient()!!
 		val response = client.get().uri("http://localhost:8080").path("/api/flights/reservation/1").request()
@@ -142,7 +142,7 @@ class ReservationControllerTest {
 
 	@Test
 	fun `post without itineraryId should return BAD_REQUEST_400`() {
-		val server = Server(ReservationController())
+		val server = Server(controller = arrayOf(ReservationController()))
 		server.startServer()
 
 		val client = webClient()!!

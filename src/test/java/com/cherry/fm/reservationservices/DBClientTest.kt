@@ -64,7 +64,7 @@ class DBClientTest {
 
     @Test
     fun `test insert contact`(){
-        val server = Server(ReservationController())
+        val server = Server(controller = arrayOf(ReservationController()))
         server.startServer()
         val client = webClient()!!
         val r = sentPostCheckResponse(client, reservation)

@@ -12,8 +12,8 @@ import io.helidon.webserver.WebServer
 import io.helidon.webserver.http.HttpService
 
 class Server(
-	controller: HttpService,
 	val port: Int = 8080,
+	vararg controller: HttpService,
 ) {
 	private val server:WebServer by lazy {
 		println("Building server...")
@@ -25,7 +25,9 @@ class Server(
 				}))
 			}
 			.routing {
-				it.register(controller)
+				controller.forEach{ cont ->
+					it.register(cont)
+				}
 				it.error(BadFormatException::class.java) { _, res, _ ->
 					res.status(APIError.BAD_FORMAT.httpStatus)
 						.send(ErrorDTO(APIError.BAD_FORMAT))
@@ -34,7 +36,8 @@ class Server(
 					res.status(APIError.VALIDATION_ERROR.httpStatus)
 						.send(ErrorDTO(APIError.VALIDATION_ERROR))
 				}
-			}.port(port).build()
+			}
+			.port(port).build()
 	}
 
 	fun startServer() {

@@ -20,7 +20,7 @@ class InfoControllerTest {
 		.build()
 	@Test
 	fun `testing basic info mock`() {
-		val server = Server(controller = InfoController())
+		val server = Server(controller = arrayOf(InfoController()))
 		server.startServer()
 		val client = webClient()!!
 		assertEquals("com.cherry.fm.reservationservices", client.get().uri("http://localhost:8080/").path("info/groupId").request().inputStream().bufferedReader().readText())

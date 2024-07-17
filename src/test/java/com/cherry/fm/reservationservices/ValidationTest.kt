@@ -22,7 +22,7 @@ class ValidationTest{
 
 	@Test
 	fun `value classes parsing with invalid firstname test`(){
-		val server: Server = Server(port= 8081, controller = ReservationController())
+		val server: Server = Server(8081, ReservationController())
 		server.startServer()
 		val client = webClient()!!
 
@@ -58,7 +58,7 @@ class ValidationTest{
 	}
 @Test
 fun `value classes parsing with invalid lastname test`(){
-		val server: Server = Server(controller = ReservationController())
+		val server: Server = Server(controller = arrayOf(ReservationController()))
 		server.startServer()
 		val client = webClient()!!
 
@@ -94,7 +94,7 @@ fun `value classes parsing with invalid lastname test`(){
 	}
 @Test
 fun `bad format test`(){
-		val server: Server = Server(controller = ReservationController())
+		val server: Server = Server(controller = arrayOf(ReservationController()))
 		server.startServer()
 		val client = webClient()!!
 
