@@ -1,9 +1,11 @@
-<div class="flex gap-20" >
+<div class="flex gap-20 w-full">
     <script>
         document.addEventListener("htmx:configRequest", (e) => {
-            const id = document.getElementById("id").value;
+            if(e.detail.path.startsWith("/api")) {
+                const   id = document.getElementById("id").value;
 
-            e.detail.path = `/api/flights/reservation/${id}`;
+                e.detail.path = `/api/flights/reservation/${id}`;
+            }
         });
     </script>
 
@@ -43,10 +45,5 @@
             {{/passengers}}
             <p><b>Itinerary Id:</b> {{itineraryId}}</p>
         </template>
-    </div>
-    <div id="modal-wrap" class="fixed inset-0 m-auto">
-        <div id="modal" class="w-[40vw] h-auto  rounded-2xl border-2 border-black">
-
-        </div>
     </div>
 </div>
