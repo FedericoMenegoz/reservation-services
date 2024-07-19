@@ -5,7 +5,7 @@
         <title>Test</title>
         <link rel="stylesheet" href="style.css">
     </head>
-    <body class="px-4 py-6 flex flex-col items-center justify-center gap-10" hx-ext="response-targets, json-enc, client-side-templates">
+    <body class="flex flex-col items-center justify-center gap-10" hx-ext="response-targets, json-enc, client-side-templates">
         <script src="./htmx.min.js"></script>
         <script src="https://unpkg.com/htmx-ext-json-enc@2.0.0/json-enc.js"></script>
         <script src="https://unpkg.com/htmx-ext-client-side-templates@2.0.0/client-side-templates.js"></script>
@@ -37,11 +37,13 @@
                 }
             });
         </script>
-        <h1 class="text-5xl">Reservation Service</h1>
-        <div id="content" class="w-full h-full">
+        <div class="shadow-sm bg-gray-200 w-full flex m-0">
+            <h1 class="text-3xl w-full text-center p-5">Reservation Service</h1>
+        </div>
+        <div id="content" class="w-full h-full py-6 px-4" >
             <div class="w-full flex justify-center gap-6">
-                <button hx-get="./reservForm.html" hx-target="#content">Make a Reservation</button>
-                <button hx-get="./reservationInfo.html" hx-target="#content">Get Reservation</button>
+                <button class="hover:bg-gray-300" hx-get="./reservForm.html" hx-target="#content">Make a Reservation</button>
+                <button class="hover:bg-gray-300" hx-get="./reservationInfo.html" hx-target="#content">Get Reservation</button>
             </div>
         </div>
     </body>

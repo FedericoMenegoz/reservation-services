@@ -1,16 +1,32 @@
 <div class="flex gap-20 w-full">
     <form
-          id="passenger"
-          class="flex flex-col gap-2 w-96"
-          hx-post="/api/flights/reservation"
-          hx-target="#result"
-          hx-target-4*="#modal"
-          mustache-template="foo"
+            id="passenger"
+            class="flex flex-col gap-2 w-max group"
+            hx-post="/api/flights/reservation"
+            hx-target="#result"
+            hx-target-4*="#modal"
+            mustache-template="foo"
     >
         <label for="firstName">First Name</label>
-        <input id="firstName" name="firstName" value="Isaia" pattern="[a-zA-Z]{3,20}" required>
+        <input class="peer/firstname focus:invalid:border-pink-500 invalid:text-pink-500"
+               id="firstName"
+               name="firstName"
+               placeholder="Isaia"
+               pattern="[a-zA-Z]{3,20}"
+               required>
+        <p class="hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/firstname:block">
+            This field must have from 3 to 20 letters.
+        </p>
         <label for="lastName">Last Name</label>
-        <input id="lastName" name="lastName" value="Tonini" pattern="[a-zA-Z]{3,20}" required>
+        <input class="peer/lastname focus:invalid:border-pink-500 invalid:text-pink-500"
+               id="lastName"
+               name="lastName"
+               placeholder="Tonini"
+               pattern="[a-zA-Z]{3,20}"
+               required>
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/lastname:block">
+            This field must have from 3 to 20 letters.
+        </p>
         <label for="gender">Gender</label>
         <select id="gender" name="gender" required>
             <option value="MALE" selected>Male</option>
@@ -18,7 +34,15 @@
             <option value="NOT_SPECIFY">Not specified</option>
         </select>
         <label for="nationality">Nationality</label>
-        <input id="nationality" name="nationality" value="ITA" pattern="[A-Z]{3}" required>
+        <input class="peer/nationality focus:invalid:border-pink-500 invalid:text-pink-500"
+               id="nationality"
+               name="nationality"
+               placeholder="ITA"
+               pattern="[A-Z]{3}"
+               required>
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/lastname:block">
+            Must be 3 capital letters.
+        </p>
         <label for="type">Type</label>
         <select id="type" name="type" required>
             <option value="INFANT">Infant</option>
@@ -26,12 +50,16 @@
             <option value="ADULT" selected>Adult</option>
         </select>
         <label for="birth">Birth Date</label>
-        <input id="birth" type="date" value="1000-09-20" name="birth" required>
+        <input id="birth" type="date" placeholder="1000-09-20" name="birth" required>
         <hr/>
         <label for="documentExpiration">Document Expiration Date</label>
-        <input id="documentExpiration" type="date" value="2033-09-20" name="documentExpiration" required>
+        <input id="documentExpiration"
+               type="date"
+               placeholder="2033-09-20"
+               name="documentExpiration"
+               required>
         <label for="number">Document Number</label>
-        <input id="number" value="sdhiasda" name="documentNumber" required>
+        <input id="number" placeholder="sdhiasda" name="documentNumber" required>
         <label for="documentType">Document Type</label>
         <select id="documentType" name="documentType" required>
             <option value="PASSPORT">Passport</option>
@@ -40,19 +68,35 @@
         <hr/>
 
         <label for="contactNum">Telephone Number</label>
-        <input id="contactNum" value="1234-4321" name="contactTelephone" pattern="[0-9]{4}-[0-9]{4}" required>
+        <input class="peer/contactNum focus:invalid:border-pink-500 invalid:text-pink-500"
+               id="contactNum"
+               placeholder="1234-4321"
+               name="contactTelephone"
+               pattern="[0-9]{4}-[0-9]{4}"
+               required>
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/contactNum:block">
+            Enter a valid number.
+        </p>
         <label for="email">Email</label>
-        <input id="email" type="email" value="abc@gmail.com" name="contactEmail" required>
-        <input type="hidden" value="asdf-gfds-hdjk" name="itineraryId">
+        <input class="peer/email focus:invalid:border-pink-500 invalid:text-pink-500"
+               id="email"
+               type="email"
+               placeholder="abc@gmail.com" name="contactEmail" required>
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/email:block">
+            Enter a valid email address
+        </p>
+        <input type="hidden" placeholder="asdf-gfds-hdjk" name="itineraryId">
 
-        <button type="submit"
+        <button class="hover:bg-gray-300 group-invalid:pointer-events-none group-invalid:opacity-50"
+                type="submit"
                 form="passenger"
-        >Invia</button>
+        >Invia
+        </button>
     </form>
     <div>
         <div id="result"></div>
         <template id="foo">
-            <h2 class="text-3xl" >Reservation succesfull:</h2>
+            <h2 class="text-3xl">Reservation succesfull:</h2>
             <p><b>Reservation id:</b> {{id}}</p>
             <p><b>User email:</b> {{contact.email}}</p>
             {{#passengers}}
