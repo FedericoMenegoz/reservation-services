@@ -1,108 +1,108 @@
 package com.cherry.fm.reservationservices
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.cherry.fm.reservationservices.services.ReservationService
 import io.helidon.common.media.type.MediaTypes
-import io.helidon.http.media.jackson.JacksonSupport
-import io.helidon.webclient.api.WebClient
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.util.function.Consumer
+import org.mockito.kotlin.mock
+import io.restassured.RestAssured.given
+import io.restassured.http.ContentType
+import org.mockito.kotlin.any
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 
-class ValidationTest{
-	private fun webClient(): WebClient? = WebClient.builder()
-	.mediaContext(Consumer {
-		it.addMediaSupport(JacksonSupport.create(ObjectMapper().apply {
-			registerModule(JavaTimeModule())
-			configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-		}))
-	})
-	.build()
+class ValidationTest {
+	private val reservationService: ReservationService = mock()
 
 	@Test
-	fun `value classes parsing with invalid firstname test`(){
-		val server: Server = Server(8081, ReservationController())
+	fun `value classes parsing with invalid firstname test`() {
+		val port = (1024..49151).random()
+		val server: Server = Server(port, ReservationController(reservationService))
 		server.startServer()
-		val client = webClient()!!
 
-		assertEquals("{\"code\":400,\"shortDescription\":\"Validation error\",\"reason\":\"400 Bad Request\"}",client
-			.post()
-			.uri("http://localhost:" + server.port)
-			.path("/api/flights/reservation")
-			.contentType(MediaTypes.APPLICATION_JSON)
-			.submit("""
-			{
-			   "passengers":[
-			      {
-			         "type":"ADULT",
-			         "gender":"MALE",
-			         "birth":"1980-01-12",
-			         "nationality":"ARG",
-			         "firstName":"r",
-			         "lastName":"r",
-			         "document":{
-			            "number":"20123456783",
-			            "type":"PASSPORT",
-			            "expiration":"2027-07-21"
-			         }
-			      }
-			   ],
-			   "contact":{
-			      "telephone":"4444-1234",
-			      "email":"flights@manning.com"
-			   },
-			   "itineraryId":"f2f61e3c-fb26-49bc-bf0f-48eef2d3d6a5*c9f178d1-3583-4598-9194-c28a29c269de"
-			}
-		""".trimIndent()).inputStream().bufferedReader().readText())
+		given()
+			.port(port)
+			.`when`()
+			.contentType(ContentType.JSON)
+			.body("""
+					{
+						"firstName":"A",
+						"lastName":"Sacco",
+						"gender":"MALE",
+						"nationality":"ARG",
+						"type":"ADULT",
+						"birth":"1980-01-12",
+						"documentExpiration":"2027-07-21",
+						"documentNumber":"20123456783",
+						"documentType":"PASSPORT",
+						"contactTelephone":"4444-1234",
+						"contactEmail":"flights@manning.com",
+						"itineraryId":"f2f61e3c"
+					}
+				""".trimIndent()
+			)
+			.post("/api/flights/reservation")
+			.then()
+			.statusCode(400)
+
+
+		verify(reservationService, never()).saveReservation(any())
 	}
-@Test
-fun `value classes parsing with invalid lastname test`(){
-		val server: Server = Server(controller = arrayOf(ReservationController()))
-		server.startServer()
-		val client = webClient()!!
 
-		assertEquals("{\"code\":400,\"shortDescription\":\"Validation error\",\"reason\":\"400 Bad Request\"}",client
-			.post()
-			.uri("http://localhost:" + server.port)
-			.path("/api/flights/reservation")
-			.contentType(MediaTypes.APPLICATION_JSON)
-			.submit("""
-			{
-			   "passengers":[
-			      {
-			         "type":"ADULT",
-			         "gender":"MALE",
-			         "birth":"1980-01-12",
-			         "nationality":"ARG",
-			         "firstName":"Andres",
-			         "lastName":"r",
-			         "document":{
-			            "number":"20123456783",
-			            "type":"PASSPORT",
-			            "expiration":"2027-07-21"
-			         }
-			      }
-			   ],
-			   "contact":{
-			      "telephone":"4444-1234",
-			      "email":"flights@manning.com"
-			   },
-			   "itineraryId":"f2f61e3c-fb26-49bc-bf0f-48eef2d3d6a5*c9f178d1-3583-4598-9194-c28a29c269de"
-			}
-		""".trimIndent()).inputStream().bufferedReader().readText())
+	@Test
+	fun `value classes parsing with invalid lastname test`() {
+		val port = (1024..49151).random()
+		val server: Server = Server(controller = arrayOf(ReservationController(reservationService)), port = port)
+		server.startServer()
+
+		given()
+			.port(port)
+			.`when`()
+			.contentType(ContentType.JSON)
+			.body("""
+					{
+						"firstName":"Andres",
+						"lastName":"r",
+						"gender":"MALE",
+						"nationality":"ARG",
+						"type":"ADULT",
+						"birth":"1980-01-12",
+						"documentExpiration":"2027-07-21",
+						"documentNumber":"20123456783",
+						"documentType":"PASSPORT",
+						"contactTelephone":"4444-1234",
+						"contactEmail":"flights@manning.com",
+						"itineraryId":"f2f61e3c"
+					}
+				""".trimIndent()
+			)
+			.post("/api/flights/reservation")
+			.then()
+			.statusCode(400)
+
+
+		verify(reservationService, never()).saveReservation(any())
 	}
-@Test
-fun `bad format test`(){
-		val server: Server = Server(controller = arrayOf(ReservationController()))
-		server.startServer()
-		val client = webClient()!!
 
-		assertEquals("{\"code\":400,\"shortDescription\":\"JSON format error\",\"reason\":\"400 Bad Request\"}",client
-			.post()
-			.uri("http://localhost:" + server.port)
-			.path("/api/flights/reservation")
-			.contentType(MediaTypes.APPLICATION_JSON)
-			.submit("{bad format}").inputStream().bufferedReader().readText())
+	@Test
+	fun `bad format test`() {
+		val port = (1024..49151).random()
+		val server: Server = Server(port = port, controller = arrayOf(ReservationController(reservationService)))
+		server.startServer()
+
+		given()
+			.port(port)
+			.`when`()
+			.contentType(ContentType.JSON)
+			.body("""{
+					}
+				""".trimIndent()
+			)
+			.post("/api/flights/reservation")
+			.then()
+			.statusCode(400)
+
+
+		verify(reservationService, never()).saveReservation(any())
 	}
 }

@@ -13,19 +13,18 @@ import com.cherry.fm.reservationservices.data.reservation_passengers.Reservation
 import com.cherry.fm.reservationservices.data.reservation_passengers.ReservationPassengersRepository
 import io.helidon.dbclient.DbStatementException
 
-class ReservationService {
-	private val repoPassenger = PassengerRepository()
-	private val repoDocument = DocumentRepository()
-	private val repoContact = ContactRepository()
-	private val repoReservation = ReservationRepository()
-	private val repoReservationPassenger = ReservationPassengersRepository()
-
+class ReservationService (
+	private val repoPassenger : PassengerRepository,
+	private val repoDocument : DocumentRepository,
+	private val repoContact : ContactRepository,
+	private val repoReservation : ReservationRepository,
+	private val repoReservationPassenger : ReservationPassengersRepository)
+	{
 	fun saveReservation(reservation: Reservation): Reservation {
 		println("Saving reservation...")
 		var contactId: Long? = null
 		var reservationId: Long? = null
 		val documentIds = mutableListOf<Long>()
-		val passengerIds = mutableListOf<Long>()
 		val (_, passengers, contact, itineraryId) = reservation
 		try {
 			contactId = repoContact.insert(ContactEntity(-1, contact.telephone, contact.email))
@@ -35,8 +34,6 @@ class ReservationService {
 				contactId = contactId))
 			println("PASSENGERS: $passengers")
 			passengers.forEach() { passenger ->
-				println("before")
-
 				documentIds.add(repoDocument.insert(DocumentEntity(
 					id = -1,
 					expiration = passenger.document.expiration,

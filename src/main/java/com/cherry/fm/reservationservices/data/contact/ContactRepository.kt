@@ -1,11 +1,12 @@
 package com.cherry.fm.reservationservices.data.contact
 
 import com.cherry.fm.reservationservices.data.DataRepository
+import io.helidon.dbclient.DbClient
 import io.helidon.dbclient.DbStatementException
 import java.math.BigInteger
 import java.util.*
 
-class ContactRepository : DataRepository<ContactEntity>() {
+class ContactRepository (dbClient: DbClient): DataRepository<ContactEntity>(dbClient) {
 
 	override fun insert(entity: ContactEntity): Long {
 		val transaction = db.transaction()

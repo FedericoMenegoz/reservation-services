@@ -15,7 +15,7 @@ import java.util.StringJoiner
 
 
 class ReservationController(
-	private val resService: ReservationService = ReservationService(),
+	private val resService: ReservationService,
 ) : HttpService {
 
 	private fun getReservation(req: ServerRequest, res: ServerResponse) {
@@ -43,7 +43,7 @@ class ReservationController(
 
 	private fun makeReservation(req: ServerRequest, res: ServerResponse) {
 		val unparsed = req.content()
-		//println(unparsed.inputStream().bufferedReader().readText())
+//		println(unparsed.inputStream().bufferedReader().readText())
 		var request: Reservation
 		try {
 			val requ = unparsed.`as`(ReservationRequest::class.java)

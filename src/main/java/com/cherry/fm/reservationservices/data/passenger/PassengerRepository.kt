@@ -9,7 +9,7 @@ import io.helidon.dbclient.DbClient
 import java.math.BigInteger
 import java.util.*
 
-class PassengerRepository: DataRepository<PassengerEntity>() {
+class PassengerRepository(dbClient: DbClient): DataRepository<PassengerEntity>(dbClient) {
 
     override fun insert(entity: PassengerEntity): Long{
         println("INIT TRANSACTION: $entity")

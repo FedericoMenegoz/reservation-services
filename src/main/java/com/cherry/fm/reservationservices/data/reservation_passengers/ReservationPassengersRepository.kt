@@ -7,7 +7,7 @@ import io.helidon.dbclient.DbClient
 import java.math.BigInteger
 import java.util.*
 
-class ReservationPassengersRepository: DataRepository<ReservationPassengersEntity>() {
+class ReservationPassengersRepository(dbClient: DbClient): DataRepository<ReservationPassengersEntity>(dbClient) {
     override fun insert(entity: ReservationPassengersEntity): Long {
         val transaction = db.transaction()
         transaction.createInsert(

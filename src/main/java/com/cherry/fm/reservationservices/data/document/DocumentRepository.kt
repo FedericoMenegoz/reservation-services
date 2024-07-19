@@ -2,10 +2,11 @@ package com.cherry.fm.reservationservices.data.document
 
 import com.cherry.fm.reservationservices.data.DataRepository
 import com.cherry.fm.reservationservices.data.passenger.PassengerEntity
+import io.helidon.dbclient.DbClient
 import java.math.BigInteger
 import java.util.*
 
-class DocumentRepository: DataRepository<DocumentEntity>() {
+class DocumentRepository (dbClient: DbClient): DataRepository<DocumentEntity>(dbClient) {
     override fun insert(entity: DocumentEntity): Long {
         println("INIT TRANSACTION: $entity")
         val transaction = db.transaction()

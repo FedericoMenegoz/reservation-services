@@ -8,7 +8,7 @@ import io.helidon.dbclient.DbStatementException
 import java.math.BigInteger
 import java.util.*
 
-class ReservationRepository: DataRepository<ReservationEntity>() {
+class ReservationRepository(dbClient: DbClient): DataRepository<ReservationEntity>(dbClient) {
     override fun insert(entity: ReservationEntity): Long {
         val transaction = db.transaction()
         try {
