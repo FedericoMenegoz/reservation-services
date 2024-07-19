@@ -11,3 +11,6 @@ build-job:
   stage: build
   image: maven:3.9.7-eclipse-temurin-22-alpine
   script: mvn clean package
+  artifacts:
+    paths:
+      - target/reservation-services.jar
