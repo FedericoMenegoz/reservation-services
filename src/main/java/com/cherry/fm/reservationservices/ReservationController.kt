@@ -1,6 +1,8 @@
 package com.cherry.fm.reservationservices
 
+import com.cherry.fm.reservationservices.error.APIError
 import com.cherry.fm.reservationservices.error.BadFormatException
+import com.cherry.fm.reservationservices.error.ErrorDTO
 import com.cherry.fm.reservationservices.error.NotValidException
 import com.cherry.fm.reservationservices.services.ReservationService
 import io.helidon.http.Status
@@ -25,9 +27,17 @@ class ReservationController(
 			.toLong()
 
 		println("GET request with id: $id")
-		res.header("Content-Type", "application/json")
-			.status(Status.OK_200)
-			.send(resService.getReservationById(id))
+
+		try{
+			res.header("Content-Type", "application/json")
+				.status(Status.OK_200)
+				.send(resService.getReservationById(id))
+		}
+		catch (e: NoSuchElementException){
+			res.header("Content-Type", "text/plain")
+				.status(APIError.NOT_FOUND.httpStatus)
+				.send(ErrorDTO(APIError.NOT_FOUND))
+		}
 		println("GET response sent.")
 	}
 

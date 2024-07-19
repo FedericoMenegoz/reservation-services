@@ -25,7 +25,7 @@
                                                 <button onclick='document.getElementById("modal-wrap").style = "display: none"' class="max-w-7 border-0 p-0">X</button>
                                             </div>
                                             <div class="bg-white p-4 rounded-b-xl">
-                                                <h1 class="text-xl">Reservation failed!</h1>
+                                                <h1 class="text-xl">${JSON.parse(e.detail.xhr.responseText)["reason"]}</h1>
                                               <p>${JSON.parse(e.detail.xhr.responseText)["shortDescription"]}</p>
                                             </div>`
                     errorBannerWrap.style.display = 'flex';
