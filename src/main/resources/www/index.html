@@ -13,6 +13,21 @@
         <script src="https://unpkg.com/mustache@latest"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script>
+            // Modify the URL in order to have the correct path
+            // .../reservation/?id=<id> => .../reservation/<id>
+            document.addEventListener("htmx:configRequest", (e) => {
+                if(e.detail.path.startsWith("/api")) {
+                    if (e.target.matches("[hx-get]")) {
+                        const   id = document.getElementById("id").value;
+                        e.detail.path = `/api/flights/reservation/${id}`;
+                    } else if (e.target.matches(["[hx-post]"])) {
+
+                        e.detail.formData.set("itineraryId", crypto.randomUUID().toString())
+                        console.log(e.detail.formData)
+                    }
+                }
+            });
+
             document.addEventListener('htmx:afterRequest', e => {
                 if(e.detail.xhr.responseURL.includes("/api")){
                     const code = e.detail.xhr.status.toString()

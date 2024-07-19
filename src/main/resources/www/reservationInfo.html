@@ -1,12 +1,6 @@
 <div class="flex gap-20 w-full">
     <script>
-        document.addEventListener("htmx:configRequest", (e) => {
-            if(e.detail.path.startsWith("/api")) {
-                const   id = document.getElementById("id").value;
 
-                e.detail.path = `/api/flights/reservation/${id}`;
-            }
-        });
     </script>
 
     <form

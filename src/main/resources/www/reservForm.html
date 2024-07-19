@@ -11,20 +11,20 @@
         <input class="peer/firstname focus:invalid:border-pink-500 invalid:text-pink-500"
                id="firstName"
                name="firstName"
-               placeholder="Isaia"
+               value="Isaia"
                pattern="[a-zA-Z]{3,20}"
                required>
-        <p class="hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/firstname:block">
+        <p class="hidden text-sm text-red-500 peer-[&:not(:value-shown):not(:focus):invalid]/firstname:block">
             This field must have from 3 to 20 letters.
         </p>
         <label for="lastName">Last Name</label>
         <input class="peer/lastname focus:invalid:border-pink-500 invalid:text-pink-500"
                id="lastName"
                name="lastName"
-               placeholder="Tonini"
+               value="Tonini"
                pattern="[a-zA-Z]{3,20}"
                required>
-        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/lastname:block">
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:value-shown):not(:focus):invalid]/lastname:block">
             This field must have from 3 to 20 letters.
         </p>
         <label for="gender">Gender</label>
@@ -37,10 +37,10 @@
         <input class="peer/nationality focus:invalid:border-pink-500 invalid:text-pink-500"
                id="nationality"
                name="nationality"
-               placeholder="ITA"
+               value="ITA"
                pattern="[A-Z]{3}"
                required>
-        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/lastname:block">
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:value-shown):not(:focus):invalid]/lastname:block">
             Must be 3 capital letters.
         </p>
         <label for="type">Type</label>
@@ -50,16 +50,16 @@
             <option value="ADULT" selected>Adult</option>
         </select>
         <label for="birth">Birth Date</label>
-        <input id="birth" type="date" placeholder="1000-09-20" name="birth" required>
+        <input id="birth" type="date" value="2003-09-20" name="birth" required>
         <hr/>
         <label for="documentExpiration">Document Expiration Date</label>
         <input id="documentExpiration"
                type="date"
-               placeholder="2033-09-20"
+               value="2033-09-20"
                name="documentExpiration"
                required>
         <label for="number">Document Number</label>
-        <input id="number" placeholder="sdhiasda" name="documentNumber" required>
+        <input id="number" value="sdhiasda" name="documentNumber" required>
         <label for="documentType">Document Type</label>
         <select id="documentType" name="documentType" required>
             <option value="PASSPORT">Passport</option>
@@ -70,22 +70,21 @@
         <label for="contactNum">Telephone Number</label>
         <input class="peer/contactNum focus:invalid:border-pink-500 invalid:text-pink-500"
                id="contactNum"
-               placeholder="1234-4321"
+               value="1234-4321"
                name="contactTelephone"
                pattern="[0-9]{4}-[0-9]{4}"
                required>
-        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/contactNum:block">
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:value-shown):not(:focus):invalid]/contactNum:block">
             Enter a valid number.
         </p>
         <label for="email">Email</label>
         <input class="peer/email focus:invalid:border-pink-500 invalid:text-pink-500"
                id="email"
                type="email"
-               placeholder="abc@gmail.com" name="contactEmail" required>
-        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]/email:block">
+               value="abc@gmail.com" name="contactEmail" required>
+        <p class="mt-2 hidden text-sm text-red-500 peer-[&:not(:value-shown):not(:focus):invalid]/email:block">
             Enter a valid email address
         </p>
-        <input type="hidden" placeholder="asdf-gfds-hdjk" name="itineraryId">
 
         <button class="hover:bg-gray-300 group-invalid:pointer-events-none group-invalid:opacity-50"
                 type="submit"
