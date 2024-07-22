@@ -3,33 +3,26 @@ package com.cherry.fm.reservationservices.data.contact
 import com.cherry.fm.reservationservices.data.DataRepository
 import io.helidon.dbclient.DbClient
 import io.helidon.dbclient.DbStatementException
+import java.lang.Exception
+import java.lang.reflect.Executable
 import java.math.BigInteger
 import java.util.*
 
 class ContactRepository (dbClient: DbClient): DataRepository<ContactEntity>(dbClient) {
-
 	override fun insert(entity: ContactEntity): Long {
-		val transaction = db.transaction()
-		try {
-			transaction.createInsert(
-				"INSERT into contact (email, telephone) values (?, ?)"
-			).params(
-				entity.email.toString(),
-				entity.telephone.toString()
-			).execute()
-			val lastID = transaction.createQuery("SELECT LAST_INSERT_ID() as lastId")
-				.execute()
-				.map { it.column("lastId").`as`(BigInteger::class.java) }
-				.findFirst()
-				.get()
-				.get()
-			transaction.commit()
+		val lastId = db.execute().createQuery(
+			"INSERT INTO contact (email, telephone) VALUES (?, ?) RETURNING id;"
+		).params(
+			entity.email.toString(),
+			entity.telephone.toString()
+		).execute()
+			.map { it.column("id").`as`(java.lang.Long::class.java) }
+			.findFirst()
+			.get()
+			.get()
 
-			return lastID.toLong()
-		} catch (e: DbStatementException) {
-			transaction.rollback()
-			throw e
-		}
+
+		return lastId.toLong()
 	}
 
 	fun getById(id: Long): Optional<ContactEntity> = db.execute()

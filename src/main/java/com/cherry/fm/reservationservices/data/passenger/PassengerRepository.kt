@@ -13,10 +13,9 @@ class PassengerRepository(dbClient: DbClient): DataRepository<PassengerEntity>(d
 
     override fun insert(entity: PassengerEntity): Long{
         println("INIT TRANSACTION: $entity")
-        val transaction = db.transaction()
-        transaction.createInsert("INSERT into passenger (birth, first_name, gender, last_name, nationality, type, document_id) values (?, ?, ?, ?, ?, ?, ?)")
+        val lastId = db.execute().createQuery("INSERT into passenger (birth, first_name, gender, last_name, nationality, type, document_id) values (?, ?, ?, ?, ?, ?, ?) returning id;")
             .params(
-                entity.birth.toString(),
+                entity.birth.toDate(),
                 entity.firstName.toString(),
                 entity.gender.toString(),
                 entity.lastName.toString(),
@@ -24,16 +23,12 @@ class PassengerRepository(dbClient: DbClient): DataRepository<PassengerEntity>(d
                 entity.type.toString(),
                 entity.documentId
             ).execute()
-        val lastID = transaction.createQuery("SELECT LAST_INSERT_ID() as lastId")
-            .execute()
-            .map { it.column("lastId").`as`(BigInteger::class.java) }
+            .map { it.column("id").`as`(java.lang.Long::class.java) }
             .findFirst()
             .get()
             .get()
 
-        transaction.commit()
-
-        return lastID.toLong()
+        return lastId.toLong()
     }
 
     fun getById(id: Long): Optional<PassengerEntity> = db.execute()

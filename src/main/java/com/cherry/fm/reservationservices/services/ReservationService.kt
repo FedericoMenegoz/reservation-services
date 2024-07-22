@@ -28,10 +28,13 @@ class ReservationService (
 		val (_, passengers, contact, itineraryId) = reservation
 		try {
 			contactId = repoContact.insert(ContactEntity(-1, contact.telephone, contact.email))
-			reservationId = repoReservation.insert(ReservationEntity(
-				id = -1,
-				itineraryId = itineraryId!!,
-				contactId = contactId))
+			reservationId = repoReservation.insert(
+				ReservationEntity(
+					id = -1,
+					itineraryId = itineraryId!!,
+					contactId = contactId
+				)
+			)
 			println("PASSENGERS: $passengers")
 			passengers.forEach() { passenger ->
 				documentIds.add(repoDocument.insert(DocumentEntity(
@@ -43,15 +46,19 @@ class ReservationService (
 
 				println("DOCUMENTS: $documentIds")
 
-				val passengerId = repoPassenger.insert(PassengerEntity(
-					id = -1,
-					birth = passenger.birth,
-					firstName = passenger.firstName,
-					gender = passenger.gender,
-					lastName = passenger.lastName,
-					nationality = passenger.nationality,
-					type = passenger.type,
-					documentId = documentIds.last()))
+				val passengerId = repoPassenger.insert(
+					PassengerEntity(
+						id = -1,
+						birth = passenger.birth,
+						firstName = passenger.firstName,
+						gender = passenger.gender,
+						lastName = passenger.lastName,
+						nationality = passenger.nationality,
+						type = passenger.type,
+						documentId = documentIds.last()
+					)
+				)
+
 				repoReservationPassenger.insert(ReservationPassengersEntity(
 					passengersId = passengerId,
 					reservationId = reservationId
@@ -92,7 +99,7 @@ class ReservationService (
 		}
 		val contactEnt = repoContact.getById(reservation.contactId).get()
 
-		return Reservation(
+		val reserv = Reservation(
 			id = id,
 			passengers = passengers,
 			contact = Contact(
@@ -101,5 +108,8 @@ class ReservationService (
 			),
 			itineraryId = reservation.itineraryId,
 		)
+
+		println(reserv)
+		return reserv
 	}
 }

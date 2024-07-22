@@ -21,7 +21,6 @@
                         const   id = document.getElementById("id").value;
                         e.detail.path = `/api/flights/reservation/${id}`;
                     } else if (e.target.matches(["[hx-post]"])) {
-
                         e.detail.formData.set("itineraryId", crypto.randomUUID().toString())
                         console.log(e.detail.formData)
                     }

@@ -9,24 +9,19 @@ import java.util.*
 class DocumentRepository (dbClient: DbClient): DataRepository<DocumentEntity>(dbClient) {
     override fun insert(entity: DocumentEntity): Long {
         println("INIT TRANSACTION: $entity")
-        val transaction = db.transaction()
-        transaction.createInsert(
-            "INSERT into document (expiration, number, type) values (?, ?, ?)"
+        val lastId = db.execute().createQuery(
+            "INSERT into document (expiration, number, type) values (?, ?, ?) returning id;"
         ).params(
-            entity.expiration.toString(),
+            entity.expiration.toDate(),
             entity.number,
             entity.type.toString(),
         ).execute()
-        val lastID = transaction.createQuery("SELECT LAST_INSERT_ID() as lastId")
-            .execute()
-            .map { it.column("lastId").`as`(BigInteger::class.java) }
+        .map { it.column("id").`as`(java.lang.Long::class.java) }
             .findFirst()
             .get()
             .get()
 
-        transaction.commit()
-
-        return lastID.toLong()
+        return lastId.toLong()
     }
 
     fun getById(id: Long): Optional<DocumentEntity> = db.execute()

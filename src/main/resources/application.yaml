@@ -11,8 +11,8 @@ app:
 db:
   source: jdbc
   connection:
-    url: jdbc:mysql://db:3306/reservations
-    username: user
+    url: jdbc:postgresql://localhost:5432/reservations
+    username: root
     password: password
     initializationFailTimeout: -1
     connectionTimeout: 2000

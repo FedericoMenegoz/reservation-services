@@ -10,27 +10,18 @@ import java.util.*
 
 class ReservationRepository(dbClient: DbClient): DataRepository<ReservationEntity>(dbClient) {
     override fun insert(entity: ReservationEntity): Long {
-        val transaction = db.transaction()
-        try {
-            transaction.createInsert(
-                "INSERT into reservation (itinerary_id, contact_id) values (?, ?)"
-            ).params(
-                entity.itineraryId,
-                entity.contactId.toString()
-            ).execute()
-            val lastID = transaction.createQuery("SELECT LAST_INSERT_ID() as lastId")
-                .execute()
-                .map { it.column("lastId").`as`(BigInteger::class.java) }
-                .findFirst()
-                .get()
-                .get()
-            transaction.commit()
+        val lastId = db.execute().createQuery(
+            "INSERT into reservation (itinerary_id, contact_id) values (?, ?) returning id;"
+        ).params(
+            entity.itineraryId,
+            entity.contactId
+        ).execute()
+        .map { it.column("id").`as`(java.lang.Long::class.java) }
+            .findFirst()
+            .get()
+            .get()
 
-            return lastID.toLong()
-        } catch (e: DbStatementException) {
-            transaction.rollback()
-            throw e
-        }
+        return lastId.toLong()
     }
 
     fun getById(id: Long): Optional<ReservationEntity> = db.execute()
