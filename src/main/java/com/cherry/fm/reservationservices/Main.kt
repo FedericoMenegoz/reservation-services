@@ -8,8 +8,16 @@ import com.cherry.fm.reservationservices.data.reservation_passengers.Reservation
 import com.cherry.fm.reservationservices.services.ReservationService
 import io.helidon.config.Config
 import io.helidon.dbclient.DbClient
+import org.flywaydb.core.Flyway
 
 fun main(){
+    val flyway: Flyway = Flyway
+        .configure()
+        .validateOnMigrate(true)
+        .dataSource("jdbc:postgresql://localhost:5432/reservations", "root", "password")
+        .load()
+    flyway.migrate()
+
     val conf: Config = Config.create()
     val dbClient = DbClient.create(conf["db"])
     val service = ReservationService(

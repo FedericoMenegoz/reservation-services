@@ -53,23 +53,21 @@
             <artifactId>helidon-metrics-system-meters</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!--<dependency>
-            <groupId>io.helidon.integrations.db</groupId>
-            <artifactId>helidon-integrations-db-mysql</artifactId>
-        </dependency>-->
-        <!--<dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <version>9.0.0</version>
-        </dependency>-->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.7.3</version>
         </dependency>
-        <!--<dependency>
-            <groupId>io.helidon.integrations.db</groupId>
-            <artifactId>helidon-integrations-db-pgsql</artifactId>
-        </dependency>-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>10.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>10.14.0</version>
+        </dependency>
         <dependency>
             <groupId>io.helidon.dbclient</groupId>
             <artifactId>helidon-dbclient-jdbc</artifactId>
