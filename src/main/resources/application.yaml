@@ -11,7 +11,7 @@ app:
 db:
   source: jdbc
   connection:
-    url: jdbc:mysql://localhost:3306/reservations
+    url: jdbc:mysql://db:3306/reservations
     username: user
     password: password
     initializationFailTimeout: -1
