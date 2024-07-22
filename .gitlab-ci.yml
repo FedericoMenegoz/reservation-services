@@ -14,7 +14,7 @@ build-job:
   script: mvn clean package
   artifacts:
     paths:
-      - target/reservation-services.jar
+      - target
 
 register:
   stage: register
