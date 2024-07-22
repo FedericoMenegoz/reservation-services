@@ -24,6 +24,6 @@ register:
   variables:
     DOCKER_HOST: tcp://docker:2376
   script:
-    - docker login registry.gitlab.com
+    - echo "$TOKEN" | docker login registry.gitlab.com -u $CI_REGISTRY_USER --password-stdin
     - docker build -t registry.gitlab.com/cherrychainstage/reservation-services .
     - docker push registry.gitlab.com/cherrychainstage/reservation-services
