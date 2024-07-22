@@ -1,3 +1,4 @@
+version: "3.3"
 services:
   server:
     image: registry.gitlab.com/cherrychainstage/reservation-services
@@ -8,6 +9,6 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_DB=reservations
-      - POSTGRES_PASSWORD=password
+      POSTGRES_USER: 'root'
+      POSTGRES_DB: 'reservations'
+      POSTGRES_PASSWORD: 'password'
