@@ -31,9 +31,9 @@ FROM container-registry.oracle.com/java/jdk-no-fee-term:21
 WORKDIR /helidon
 
 # Copy the binary built in the 1st stage
-COPY --from=build /helidon/target/Reservation Services.jar ./
+COPY --from=build /helidon/target/reservation-services.jar ./
 COPY --from=build /helidon/target/libs ./libs
 
-CMD ["java", "-jar", "Reservation Services.jar"]
+CMD ["java", "-jar", "reservation-services.jar"]
 
 EXPOSE 8080

@@ -14,7 +14,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <mainClass>com.cherry.fm.reservationservices.Main</mainClass>
+        <mainClass>com.cherry.fm.reservationservices.MainKt</mainClass>
         <kotlin.version>2.0.0</kotlin.version>
     </properties>
 

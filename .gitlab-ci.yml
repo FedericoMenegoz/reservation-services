@@ -1,6 +1,7 @@
 stages:
   - test
   - build
+  - register
 
 test-all:
   stage: test
@@ -14,3 +15,15 @@ build-job:
   artifacts:
     paths:
       - target/reservation-services.jar
+
+register:
+  stage: register
+  image: docker:24.0.5
+  services:
+    - docker:24.0.5-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2376
+  script:
+    - docker login registry.gitlab.com
+    - docker build -t registry.gitlab.com/cherrychainstage/reservation-services .
+    - docker push registry.gitlab.com/cherrychainstage/reservation-services
