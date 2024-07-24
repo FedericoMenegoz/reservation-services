@@ -4,11 +4,15 @@ services:
     image: registry.gitlab.com/cherrychainstage/reservation-services
     ports:
       - "8080:8080"
+    environment:
+      POSTGRES_DB: 'jdbc:postgresql://db:5432/reservations'
+      POSTGRES_USER: 'root'
+      POSTGRES_PASSWORD: 'password'
   db:
     image: postgres:latest
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: 'root'
       POSTGRES_DB: 'reservations'
+      POSTGRES_USER: 'root'
       POSTGRES_PASSWORD: 'password'

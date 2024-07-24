@@ -11,14 +11,19 @@ import io.helidon.dbclient.DbClient
 import org.flywaydb.core.Flyway
 
 fun main(){
+    val dbHost = System.getenv("POSTGRES_DB")
+    val dbUser = System.getenv("POSTGRES_USER")
+    val dbPasswd = System.getenv("POSTGRES_PASSWORD")
+
     val flyway: Flyway = Flyway
         .configure()
         .validateOnMigrate(true)
-        .dataSource("jdbc:postgresql://localhost:5432/reservations", "root", "password")
+        .dataSource(dbHost, dbUser, dbPasswd)
         .load()
     flyway.migrate()
 
     val conf: Config = Config.create()
+
     val dbClient = DbClient.create(conf["db"])
     val service = ReservationService(
         repoContact = ContactRepository(dbClient),

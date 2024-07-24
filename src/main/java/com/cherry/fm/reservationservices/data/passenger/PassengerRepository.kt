@@ -1,12 +1,7 @@
 package com.cherry.fm.reservationservices.data.passenger
 
-import com.cherry.fm.reservationservices.Contact
-import com.cherry.fm.reservationservices.Passenger
 import com.cherry.fm.reservationservices.data.DataRepository
-import com.cherry.fm.reservationservices.data.reservation.ReservationEntity
-import io.helidon.config.Config
 import io.helidon.dbclient.DbClient
-import java.math.BigInteger
 import java.util.*
 
 class PassengerRepository(dbClient: DbClient): DataRepository<PassengerEntity>(dbClient) {

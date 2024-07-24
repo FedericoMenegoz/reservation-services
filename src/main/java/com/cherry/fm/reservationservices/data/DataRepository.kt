@@ -1,6 +1,5 @@
 package com.cherry.fm.reservationservices.data
 
-import io.helidon.config.Config
 import io.helidon.dbclient.DbClient
 
 abstract class DataRepository<T> (protected val db: DbClient ){

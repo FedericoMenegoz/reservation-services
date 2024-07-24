@@ -1,11 +1,7 @@
 package com.cherry.fm.reservationservices.data.reservation_passengers
 
 import com.cherry.fm.reservationservices.data.DataRepository
-import com.cherry.fm.reservationservices.data.document.DocumentEntity
-import io.helidon.config.Config
 import io.helidon.dbclient.DbClient
-import java.math.BigInteger
-import java.util.*
 
 class ReservationPassengersRepository(dbClient: DbClient): DataRepository<ReservationPassengersEntity>(dbClient) {
     override fun insert(entity: ReservationPassengersEntity): Long {

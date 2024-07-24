@@ -11,9 +11,9 @@ app:
 db:
   source: jdbc
   connection:
-    url: jdbc:postgresql://localhost:5432/reservations
-    username: root
-    password: password
+    url: ${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
     initializationFailTimeout: -1
     connectionTimeout: 2000
   health-check:
